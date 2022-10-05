@@ -7,7 +7,8 @@ import java.text.ParseException;
 import java.util.Date;
 
 public class FilterOfRequest {
-    float rate = 90.0f/100.0f ;
+    float rate = 90.0f / 100.0f;
+    long duration = 60*2;
 
     public FilterOfRequest() {
 
@@ -20,44 +21,24 @@ public class FilterOfRequest {
             Date dateEndTime1 = Function.convertTime(rq1.getEnd_time());
             Date dateEndTime2 = Function.convertTime(rq2.getEnd_time());
 
-
-            if (dateStartTime1.before(dateStartTime2) & dateEndTime1.after(dateEndTime2)) {
-                return true;
-            }
-            if (dateStartTime1.after(dateStartTime2) & dateEndTime1.before(dateEndTime2)) {
-                return true;
-            }
-            if (dateStartTime1.after(dateStartTime2) & dateEndTime1.before(dateEndTime2)) {
-                return true;
-            }
-            if (dateStartTime1.before(dateStartTime2) & ( dateEndTime1.before(dateEndTime2)
-                    &  dateEndTime1.after(dateStartTime2))) {
-                if(Function.differenceInTime(dateEndTime1,dateStartTime2) > 60) {
-                    return true;
-                }
-            }
-
-            if ((dateStartTime1.after(dateStartTime2) &  dateStartTime1.before(dateEndTime2))
-                    &  dateEndTime1.after(dateEndTime2)) {
-               if(Function.differenceInTime(dateStartTime1,dateEndTime2) > 60) {
-                    return true;
-                }
-
-            }
-            if (dateStartTime1.equals(dateStartTime2) & ( dateEndTime1.before(dateEndTime2)
-                    &  dateEndTime1.after(dateStartTime2))) {
-                if(Function.differenceInTime(dateEndTime1,dateStartTime2) > 60) {
-                    return true;
-                }
-            }
-            if ((dateStartTime1.after(dateStartTime2) &  dateStartTime1.before(dateEndTime2))
-                    &  dateEndTime1.equals(dateEndTime2)) {
-                if(Function.differenceInTime(dateStartTime1,dateEndTime2) > 60) {
+            if (dateStartTime1.equals(dateStartTime2)) {
+                if (Function.differenceInTime(dateEndTime1, dateStartTime2) >= duration) {
                     return true;
                 }
 
             }
 
+            if (dateStartTime1.before(dateStartTime2)) {
+                if (Function.differenceInTime(dateEndTime1, dateStartTime2) >= duration) {
+                    return true;
+                }
+
+            }
+            if (dateStartTime1.after(dateStartTime2)) {
+                if (Function.differenceInTime(dateStartTime1, dateEndTime2) >= duration) {
+                    return true;
+                }
+            }
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -67,30 +48,28 @@ public class FilterOfRequest {
         return false;
     }
 
-    public boolean filterRegion (Request rq1, Request rq2){
-        double distance = Function.minDistanceOf2Objects(rq1,rq2);
-        if(rq1.getRegions().size() == rq2.getRegions().size()){
-            if(distance >= rq1.getRegions().size()*0.5f){
+    public boolean filterRegion(Request rq1, Request rq2) {
+        double distance = Function.minDistanceOf2Objects(rq1, rq2);
+        if (rq1.getRegions().size() == rq2.getRegions().size()) {
+            if (distance >= rq1.getRegions().size() * 0.5f) {
                 return false;
             }
         }
-        if(rq1.getRegions().size() > rq2.getRegions().size()){
-            if(distance > (rq2.getRegions().size()) * rate){
+        if (rq1.getRegions().size() > rq2.getRegions().size()) {
+            if (distance > (rq2.getRegions().size()) * rate) {
                 return false;
             }
         }
-        if(rq1.getRegions().size() <  rq2.getRegions().size()){
-            if(distance > (rq1.getRegions().size()) * rate){
+        if (rq1.getRegions().size() < rq2.getRegions().size()) {
+            if (distance > (rq1.getRegions().size()) * rate) {
                 return false;
             }
         }
-        return  true;
+        return true;
     }
 
-    public double getDistance (Request rq1, Request rq2){
-        return Function.minDistanceOf2Objects(rq1,rq2);
+    public double getDistance(Request rq1, Request rq2) {
+        return Function.minDistanceOf2Objects(rq1, rq2);
     }
-
-
 
 }

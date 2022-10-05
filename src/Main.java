@@ -76,26 +76,17 @@ public class Main {
             System.out.printf("distance 2 & 3 : Not Match  \n");
         }*/
 
-        Request rq1 =  new Request(1,"07:00:00","09:00:00");
-        Request rq2 =  new Request(2,"07:30:00","09:00:00");
+        Request rq1 =  new Request(1,"07:00:00","10:00:00");
+        Request rq2 =  new Request(2,"07:00:00","10:00:00");
         Date dateStartTime1 = Function.convertTime(rq1.getStart_time());
         Date dateStartTime2 = Function.convertTime(rq2.getStart_time());
         Date dateEndTime1 = Function.convertTime(rq1.getEnd_time());
         Date dateEndTime2 = Function.convertTime(rq2.getEnd_time());
 
-        long duration =  Function.differenceInTime(dateEndTime1,dateStartTime2);
-        System.out.println(duration);
         if (filter.filterTime(rq1,rq2)){
             System.out.println("distance 1 & 2 : Match  \n");
         }else{
             System.out.printf("distance 1 & 2 : Not Match  \n");
         }
-
-
-        Timestamp ts=new Timestamp(dateStartTime1.getTime());
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        System.out.println(formatter.format(ts));
-
-
     }
 }
