@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class FilterOfRequest {
     float rate = 90.0f/100.0f ;
-
+    float rateWhenSizeIsEqual = 0.66f ;
     public FilterOfRequest() {
 
     }
@@ -70,7 +70,7 @@ public class FilterOfRequest {
     public boolean filterRegion (Request rq1, Request rq2){
         double distance = Function.minDistanceOf2Objects(rq1,rq2);
         if(rq1.getRegions().size() == rq2.getRegions().size()){
-            if(distance >= rq1.getRegions().size()*0.5f){
+            if(distance >= rq1.getRegions().size()*rateWhenSizeIsEqual){
                 return false;
             }
         }
