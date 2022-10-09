@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 
-public class Function {
+public class  Function {
     public static int minDistance(String word1, String word2) {
         int len1 = word1.length();
         int len2 = word2.length();
